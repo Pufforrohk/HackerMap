@@ -12,7 +12,7 @@ namespace lookup
         const double longitude;
         const double latitude;
 
-        Coords(double longitude, double latitude);
+        Coords(double latitude, double longitude);
     };
 
     struct Mapping {

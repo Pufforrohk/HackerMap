@@ -1,5 +1,10 @@
 #include <lookup.hh>
 #include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <iostream>
 
 namespace lookup
 {
@@ -9,7 +14,7 @@ namespace lookup
     {
     }
 
-    Coords::Coords(double lg, double lt)
+    Coords::Coords(double lt, double lg)
         : longitude(lg),
           latitude(lt)
     {
@@ -22,7 +27,26 @@ namespace lookup
 
     Coords GeoIp::lookup(const std::string &address)
     {
-        return Coords(10, 20);
+        // Horrible temporary version
+        // For each address, new query to the server
+        // It also depends on wget
+        FILE* f = popen(("wget -q -O - freegeoip.net/csv/" + address).c_str(),"r");
+        char buffer[1024];
+        if(fgets(buffer,1024,f)==NULL)
+            ;
+        std::string s(buffer);
+        std::vector<std::string> parsed;
+        int cur = 0;
+        for(int i=0; i<10; i++) {
+            int next = s.find(",",cur);
+            parsed.push_back(s.substr(cur+1,next-cur-2));
+            cur = next+1;
+        }
+        // Format is: ip,countrycode,countryname,regioncode,regionname,city,zipcode,lat,long,metrocode,areacode
+        double latitude = stod(parsed[7]);
+        double longitude = stod(parsed[8]);
+        fclose(f);
+        return Coords(latitude, longitude);
     }
 
     void GeoIp::run()

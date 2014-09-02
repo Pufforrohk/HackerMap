@@ -11,13 +11,15 @@ int main (int argc, char **argv)
     utils::SafeQueue<lookup::Mapping> queue;
     geo.set_output(&queue);
     geo.run();
-    for(int i=0; i<10; i++) {
-        geo.messages.push("173.194.32.55");
-    }
-    for(int i=0; i<10; i++) {
+    // Test on a few IP
+    string unitn = "193.205.211.2";
+    string avgn = "206.190.138.228";
+    geo.messages.push(unitn);
+    geo.messages.push(avgn);
+    for(int i=0; i<2; i++) {
         auto mapping = queue.pop();
         auto coords = mapping.coords;
-        cout << coords.longitude << ", " << coords.latitude << endl;
+        cout<<mapping.address<<" "<<coords.latitude<<" "<<coords.longitude << endl;
     }
     geo.terminate();
     geo.join();

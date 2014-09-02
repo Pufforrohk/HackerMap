@@ -24,6 +24,7 @@ check_PROGRAMS = \
 	network_bytes \
 	queue_base \
 	visualizer_base \
+	lookup_adv \
 	lookup_base
 
 TESTS = $(check_PROGRAMS)
@@ -47,3 +48,7 @@ lookup_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
 visualizer_base_SOURCES = visualizer_base.cc
 visualizer_base_LDADD = -lhackermap
 visualizer_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
+
+lookup_adv_SOURCES = lookup_adv.cc
+lookup_adv_LDADD = -lhackermap
+lookup_adv_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
